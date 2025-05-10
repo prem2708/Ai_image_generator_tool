@@ -1,0 +1,1321 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Image Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(15, 12, 41, 0.8);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #6a11cb, #2575fc);
+    border-radius: 6px;
+    border: 2px solid rgba(15, 12, 41, 0.8);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #7a25db, #3585fc);
+}
+
+html {
+    scroll-behavior: smooth;
+    scrollbar-color: #6a11cb rgba(15, 12, 41, 0.8);
+    scrollbar-width: thin;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #fff;
+    overflow-x: hidden;
+    background-color: #0f0c29;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 30px;
+    width: 100%;
+}
+
+a {
+    text-decoration: none;
+    color: #fff;
+    transition: all 0.3s ease;
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    transition: transform 0.5s ease;
+}
+
+img:hover {
+    transform: scale(1.02);
+}
+
+h1, h2, h3 {
+    font-weight: 700;
+    margin-bottom: 20px;
+    line-height: 1.3;
+}
+
+h1 {
+    font-size: 3.5rem;
+    background: linear-gradient(to right, #fff, #a891ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+h2 {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    position: relative;
+    display: inline-block;
+}
+
+h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, #6a11cb, #2575fc);
+    border-radius: 2px;
+}
+
+h3 {
+    font-size: 1.6rem;
+}
+
+section {
+    padding: 100px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn {
+    display: inline-block;
+    padding: 14px 36px;
+    border: none;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #6a11cb, #2575fc);
+    z-index: -1;
+    transition: all 0.4s ease;
+}
+
+.primary-btn {
+    background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+    color: white;
+    box-shadow: 0 7px 20px rgba(106, 17, 203, 0.3);
+}
+
+.primary-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(106, 17, 203, 0.5);
+    letter-spacing: 0.5px;
+}
+
+/* Header */
+header {
+    background-color: rgba(15, 12, 41, 0.95);
+    padding: 20px 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.4s ease;
+}
+
+header.scrolled {
+    padding: 15px 0;
+    background-color: rgba(15, 12, 41, 0.98);
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.8rem;
+    color: white;
+    font-weight: 700;
+    background: linear-gradient(90deg, #fff, #a891ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-right: 20px;
+}
+
+nav {
+    position: relative;
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav ul {
+    display: flex;
+    align-items: center;
+}
+
+nav ul li {
+    margin-left: 35px;
+    position: relative;
+}
+
+nav ul li a {
+    font-weight: 500;
+    position: relative;
+    padding: 5px 0;
+}
+
+nav ul li a::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #6a11cb, #2575fc);
+    transition: width 0.3s ease;
+}
+
+nav ul li a:hover::after,
+nav ul li a.active::after {
+    width: 100%;
+}
+
+nav ul li a.active,
+nav ul li a:hover {
+    color: #a891ff;
+}
+
+/* Auth buttons in nav */
+.auth-buttons {
+    display: flex;
+    gap: 15px;
+    margin-left: auto;
+}
+
+.login-btn, .register-btn {
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.login-btn {
+    background: transparent;
+    color: white;
+    border: 2px solid rgba(106, 17, 203, 0.7);
+}
+
+.login-btn:hover {
+    background: rgba(106, 17, 203, 0.1);
+    transform: translateY(-3px);
+}
+
+.register-btn {
+    background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 15px rgba(106, 17, 203, 0.3);
+}
+
+.register-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(106, 17, 203, 0.4);
+}
+
+/* Mobile menu */
+.mobile-menu-toggle {
+    display: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 1001;
+    color: #fff;
+}
+
+.mobile-menu-toggle i {
+    transition: all 0.3s ease;
+}
+
+.mobile-auth-buttons {
+    display: none;
+    flex-direction: column;
+    gap: 15px;
+    width: 80%;
+    margin: 15px auto;
+}
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 80px;
+    position: relative;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(106, 17, 203, 0.2) 0%, rgba(37, 117, 252, 0.1) 70%, transparent 100%);
+    top: 20%;
+    left: -150px;
+    z-index: 0;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(106, 17, 203, 0.2) 0%, rgba(37, 117, 252, 0.1) 70%, transparent 100%);
+    bottom: 10%;
+    right: -100px;
+    z-index: 0;
+}
+
+.hero .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 1;
+}
+
+.hero-content {
+    flex: 1;
+    padding-right: 50px;
+}
+
+.hero-content p {
+    font-size: 1.25rem;
+    margin-bottom: 40px;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.hero-image {
+    flex: 1;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+/* Navigation Cards */
+.navigation {
+    background-color: #1a1830;
+    text-align: center;
+    position: relative;
+}
+
+.navigation::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100px;
+    top: -50px;
+    left: 0;
+    background: linear-gradient(to bottom, transparent, #1a1830);
+    z-index: 1;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.card {
+    background: rgba(75, 28, 180, 0.2);
+    backdrop-filter: blur(10px);
+    padding: 35px 25px;
+    border-radius: 16px;
+    transition: all 0.4s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, rgba(106, 17, 203, 0.15), rgba(37, 117, 252, 0.15));
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.card:hover {
+    transform: translateY(-15px);
+    border-color: rgba(106, 17, 203, 0.5);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+.card:hover::before {
+    opacity: 1;
+}
+
+.card h3 {
+    margin-bottom: 15px;
+    position: relative;
+    z-index: 1;
+}
+
+.card p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* Possibilities Section */
+.possibilities {
+    background-color: #271f1c;
+    text-align: center;
+    position: relative;
+}
+
+.possibilities::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGRlZnM+CiAgICA8cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KICAgICAgPHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAiIHN0cm9rZT0iIzYxNDA0MyIgc3Ryb2tlLW9wYWNpdHk9IjAuMSIgZmlsbD0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIi8+CiAgICA8L3BhdHRlcm4+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiIC8+Cjwvc3ZnPg==');
+    opacity: 0.3;
+    z-index: 0;
+}
+
+.steps {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 60px;
+    position: relative;
+    z-index: 1;
+}
+
+.step {
+    position: relative;
+    flex: 1;
+    text-align: center;
+    padding: 0 15px;
+}
+
+.step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 30px;
+    right: -50px;
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(90deg, #6a11cb, #2575fc);
+    z-index: -1;
+}
+
+.step-number {
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: white;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.7rem;
+    font-weight: bold;
+    margin: 0 auto 25px;
+    box-shadow: 0 10px 20px rgba(106, 17, 203, 0.3);
+    transition: all 0.3s ease;
+}
+
+.step:hover .step-number {
+    transform: scale(1.1);
+}
+
+.step-text {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* How It Works Section */
+.how-it-works {
+    background-color: #271f1c;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.steps-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 60px;
+}
+
+.step-item {
+    flex: 1;
+    max-width: 300px;
+    padding: 0 15px;
+    transition: all 0.3s ease;
+}
+
+.step-item:hover {
+    transform: translateY(-10px);
+}
+
+.icon {
+    font-size: 2rem;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 25px;
+    position: relative;
+    box-shadow: 0 10px 20px rgba(106, 17, 203, 0.3);
+    transition: all 0.3s ease;
+}
+
+.step-item:hover .icon {
+    transform: rotate(10deg) scale(1.1);
+}
+
+.icon::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.7;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0;
+    }
+}
+
+/* Features Section */
+.features {
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    text-align: center;
+    position: relative;
+}
+
+.feature-list {
+    margin-top: 60px;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 60px;
+    text-align: left;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 30px;
+    border-radius: 16px;
+    transition: all 0.3s ease;
+}
+
+.feature-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.feature-icon {
+    font-size: 2rem;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    min-width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 30px;
+    box-shadow: 0 10px 20px rgba(106, 17, 203, 0.3);
+}
+
+.feature-content {
+    flex: 1;
+}
+
+.feature-content h3 {
+    margin-bottom: 10px;
+}
+
+.feature-content p {
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.7;
+}
+
+/* FAQ Section */
+.faq {
+    background: linear-gradient(135deg, #1a1a30, #2c2a63);
+    position: relative;
+}
+
+.faq .container {
+    display: flex;
+    align-items: flex-start;
+}
+
+.faq-content {
+    flex: 1;
+    padding-right: 60px;
+}
+
+.faq-item {
+    margin-bottom: 25px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 25px;
+    transition: all 0.3s ease;
+}
+
+.faq-item:hover {
+    border-bottom-color: rgba(106, 17, 203, 0.5);
+}
+
+.faq-question {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.faq-question i {
+    margin-right: 20px;
+    transition: transform 0.3s ease;
+    color: #a891ff;
+}
+
+.faq-question.active i {
+    transform: rotate(180deg);
+}
+
+.faq-answer {
+    margin-top: 15px;
+    padding-left: 35px;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.7;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+}
+
+.faq-image {
+    flex: 1;
+}
+
+/* Footer */
+footer {
+    background-color: #1a1a30;
+    padding: 80px 0 30px;
+    text-align: center;
+    position: relative;
+}
+
+footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, #6a11cb, #2575fc, #6a11cb);
+    background-size: 200% 100%;
+    animation: gradient 5s ease infinite;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.footer-links ul {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0;
+}
+
+.footer-links li {
+    margin: 0 15px;
+}
+
+.footer-links a {
+    color: rgba(255, 255, 255, 0.7);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.footer-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #6a11cb, #2575fc);
+    transition: width 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #fff;
+}
+
+.footer-links a:hover::after {
+    width: 100%;
+}
+
+.copyright {
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 30px;
+}
+
+/* Animation classes */
+.fade-in {
+    animation: fadeIn 1s ease forwards;
+}
+
+.slide-up {
+    animation: slideUp 0.8s ease forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Progress indicator for scrolling */
+.scroll-progress-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 1002;
+}
+
+.scroll-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #6a11cb, #2575fc, #6a11cb);
+    width: 0%;
+    background-size: 200% 100%;
+    animation: gradient 5s ease infinite;
+    transition: width 0.2s ease;
+}
+
+/* Media Queries */
+@media (max-width: 1200px) {
+    .container {
+        padding: 0 40px;
+    }
+    
+    h1 {
+        font-size: 3rem;
+    }
+    
+    h2 {
+        font-size: 2.2rem;
+    }
+}
+
+@media (max-width: 992px) {
+    section {
+        padding: 80px 0;
+    }
+    
+    h1 {
+        font-size: 2.5rem;
+    }
+    
+    h2 {
+        font-size: 2rem;
+    }
+    
+    .hero {
+        min-height: auto;
+        padding: 120px 0 60px;
+    }
+    
+    .hero .container {
+        flex-direction: column;
+    }
+    
+    .hero-content {
+        padding-right: 0;
+        margin-bottom: 50px;
+        text-align: center;
+    }
+    
+    .hero-content p {
+        font-size: 1.1rem;
+    }
+    
+    .steps {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 40px;
+    }
+    
+    .step {
+        flex: 0 0 calc(50% - 40px);
+        margin-bottom: 40px;
+    }
+    
+    .step:not(:last-child)::after {
+        display: none;
+    }
+    
+    .steps-container {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 40px;
+    }
+    
+    .step-item {
+        flex: 0 0 calc(50% - 40px);
+        margin-bottom: 40px;
+    }
+    
+    .faq .container {
+        flex-direction: column;
+    }
+    
+    .faq-content {
+        padding-right: 0;
+        margin-bottom: 50px;
+    }
+    
+    .feature-item {
+        padding: 25px;
+    }
+    
+    .auth-buttons {
+        display: none;
+    }
+    
+    .mobile-auth-buttons {
+        display: flex;
+    }
+}
+
+@media (max-width: 768px) {
+    section {
+        padding: 60px 0;
+    }
+    
+    h1 {
+        font-size: 2.2rem;
+    }
+    
+    h2 {
+        font-size: 1.8rem;
+    }
+    
+    .container {
+        padding: 0 25px;
+    }
+    
+    header {
+        padding: 15px 0;
+    }
+    
+    .mobile-menu-toggle {
+        display: block;
+    }
+    
+    header .container {
+        flex-wrap: wrap;
+    }
+    
+    nav {
+        order: 2;
+        flex: 0 0 auto;
+    }
+    
+    nav ul {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        flex-direction: column;
+        background-color: rgba(15, 12, 41, 0.98);
+        padding: 20px 0;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        opacity: 0;
+        transform: translateY(-10px);
+        z-index: 100;
+    }
+    
+    nav ul.active {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    nav ul li {
+        margin: 15px 0;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+        transition-delay: calc(0.1s * var(--i, 0));
+    }
+    
+    nav ul.active li {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    .card-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .step {
+        flex: 0 0 100%;
+    }
+    
+    .step-item {
+        flex: 0 0 100%;
+    }
+    
+    .feature-item {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .feature-icon {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+    
+    .footer-links ul {
+        flex-direction: column;
+    }
+    
+    .footer-links li {
+        margin: 10px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 2rem;
+    }
+    
+    h2 {
+        font-size: 1.6rem;
+    }
+    
+    .btn {
+        padding: 12px 25px;
+        font-size: 0.9rem;
+    }
+    
+    .hero {
+        padding: 100px 0 40px;
+    }
+    
+    .hero-content p {
+        font-size: 1rem;
+    }
+    
+    .feature-item {
+        padding: 20px;
+    }
+} 
+    </style>
+</head>
+<body>
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-progress-container">
+        <div class="scroll-progress-bar"></div>
+    </div>
+
+    <header>
+        <div class="container">
+            <h1 class="logo">AI Image Generator</h1>
+            <nav>
+                <ul>
+                    <li style="--i:1"><a href="#hero" class="active">Home</a></li>
+                    <li style="--i:2"><a href="#features">Features</a></li>
+                    <li style="--i:3"><a href="#how-it-works">How It Works</a></li>
+                    <li style="--i:4"><a href="#faq">FAQ</a></li>
+                    <li style="--i:5"><a href="#contact">Contact</a></li>
+                </ul>
+                <div class="auth-buttons">
+                    <a href="{% url 'login' %}" target="_blank"   class="login-btn">Login</a>
+                    <a href="{% url 'register' %}"  class="register-btn">Register</a>
+                </div>
+            </nav>
+            <div class="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+        <div class="mobile-auth-buttons">
+            <button class="login-btn">Log In</button>
+            <button class="register-btn">Register</button>
+        </div>
+    </header>
+
+    <section id="hero" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Unleash Your Imagination: AI-Powered Image Generation</h1>
+                <p>Create stunning visuals from text prompts in seconds.</p>
+                <button class="btn primary-btn">Get Started</button>
+            </div>
+            <div class="hero-image">
+                <img src="{% static 'co.jpg' %}" alt="AI Generated Carousel">
+            </div>
+        </div>
+    </section>
+
+    <section id="navigation" class="navigation">
+        <div class="container">
+            <h2>Effortless Navigation</h2>
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Features</h3>
+                    <p>Explore the diverse capabilities of our AI image generator.</p>
+                </div>
+                <div class="card">
+                    <h3>Examples</h3>
+                    <p>View inspiring creations generated by our AI.</p>
+                </div>
+                <div class="card">
+                    <h3>FAQ</h3>
+                    <p>Get answers to frequently asked questions.</p>
+                </div>
+                <div class="card">
+                    <h3>Login/Sign Up</h3>
+                    <p>Access your account or create a new one.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="possibilities" class="possibilities">
+        <div class="container">
+            <h2>Endless Possibilities: See What You Can Create</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-text">Photography</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-text">Digital Art</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-text">Realistic</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-text">Abstract</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <h2>Easy as 1-2-3: Generate Your First Image</h2>
+            <div class="steps-container">
+                <div class="step-item">
+                    <div class="icon"><i class="fas fa-keyboard"></i></div>
+                    <div class="step-content">
+                        <h3>Enter Prompt</h3>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="icon"><i class="fas fa-paint-brush"></i></div>
+                    <div class="step-content">
+                        <h3>Choose Style</h3>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="icon"><i class="fas fa-magic"></i></div>
+                    <div class="step-content">
+                        <h3>Generate</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <div class="container">
+            <h2>Powerful AI Image Generation Features</h2>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <div class="feature-icon">T</div>
+                    <div class="feature-content">
+                        <h3>Text-to-Image</h3>
+                        <p>Generate images from text descriptions.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-image"></i></div>
+                    <div class="feature-content">
+                        <h3>Style Transfer</h3>
+                        <p>Apply artistic styles to your images.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-expand-arrows-alt"></i></div>
+                    <div class="feature-content">
+                        <h3>Resolution Upscaling</h3>
+                        <p>Enhance low-resolution images.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq" class="faq">
+        <div class="container">
+            <div class="faq-content">
+                <h2>Got Questions? We've Got Answers.</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <i class="fas fa-chevron-down"></i>
+                            <h3>What is AI image generation?</h3>
+                        </div>
+                        <div class="faq-answer">
+                            <p>AI image generation uses artificial intelligence to create images from text prompts.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <i class="fas fa-chevron-down"></i>
+                            <h3>Can I use the generated images commercially?</h3>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Yes, you can use the generated images for commercial purposes, subject to our terms of service.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="faq-image">
+                <img src="{% static 'cs.png' %}" alt="Customer Support">
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container">
+            <h2>Contact Us</h2>
+            <p>AI IMAGE@GMAIL.COM</p>
+            <div class="footer-links">
+                <ul>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+            <p class="copyright">© 2025 AI Image Generator</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+        const navMenu = document.querySelector('nav ul');
+        
+        if (mobileMenuToggle) {
+            mobileMenuToggle.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+                mobileMenuToggle.querySelector('i').classList.toggle('fa-bars');
+                mobileMenuToggle.querySelector('i').classList.toggle('fa-times');
+            });
+        }
+
+        // Close mobile menu when clicking on a link
+        const navLinks = document.querySelectorAll('nav ul li a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                mobileMenuToggle.querySelector('i').classList.add('fa-bars');
+                mobileMenuToggle.querySelector('i').classList.remove('fa-times');
+            });
+        });
+
+        // Header scroll effect
+        const header = document.querySelector('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // FAQ accordion
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                question.classList.toggle('active');
+                const answer = question.nextElementSibling;
+                answer.style.maxHeight = question.classList.contains('active') ? 
+                    answer.scrollHeight + 'px' : '0';
+            });
+        });
+
+        // Active nav link highlighting
+        function highlightNavLink() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('nav ul li a');
+            
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                
+                if (window.scrollY >= (sectionTop - 200)) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${currentSection}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', highlightNavLink);
+
+        // Scroll progress indicator
+        function updateScrollProgress() {
+            const scrollPosition = window.scrollY;
+            const totalHeight = document.body.scrollHeight - window.innerHeight;
+            const progress = (scrollPosition / totalHeight) * 100;
+            
+            document.querySelector('.scroll-progress-bar').style.width = `${progress}%`;
+        }
+        
+        window.addEventListener('scroll', updateScrollProgress);
+        window.addEventListener('resize', updateScrollProgress);
+        
+        // Initialize
+        updateScrollProgress();
+        highlightNavLink();
+    </script>
+</body>
+</html> 
