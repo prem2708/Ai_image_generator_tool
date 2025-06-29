@@ -831,7 +831,8 @@ body.dark-theme.conatiner{
                         <div class="select-wrapper">
                             <select class="custom-select" id="model-select" required>
                                 <option value="" selected disabled>Select Model</option>
-                                <option value="black-forest-labs/flux-dev">FLUX.1-dev</option>
+                                <option value="black-forest-labs/FLUX.1-dev">FLUX.1-dev</option>
+                                
                                 <option value="stabilityai/stable-diffusion-3.5-large">Stable Diffusion 3.5 Large</option>
                                 
                             </select>
@@ -1012,40 +1013,40 @@ const toggleTheme = () => {
     themeToggle.querySelector("i").className = isDarkTheme ? "fas fa-sun" : "fas fa-moon";
 };
 
-const generateImages = async (model, count, ratio, prompt) => {
-    // Use the correct API endpoint for image generation
-    const MODEL_URL = `https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0`;
-    
+const generateImages = async (model, prompt, imageCount, aspectRatio) => {
     try {
-        // Generate images directly without model status check
-        const response = await fetch(MODEL_URL, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${API_KEY}`,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                inputs: prompt,
-                parameters: {
-                    num_inference_steps: 50,
-                    guidance_scale: 7.5,
-                    num_images_per_prompt: count,
-                    width: ratio === '16/9' ? 1024 : 512,
-                    height: ratio === '9/16' ? 1024 : 512
-                }
-            })
-        });
-
-        if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(`Failed to generate images: ${errorText}`);
+        // First verify model exists
+        const modelCheck = await fetch(`https://huggingface.co/api/models/${model}`);
+        if (!modelCheck.ok) {
+            throw new Error(`Model ${model} not found`);
         }
 
-        // Create a blob URL for the image
-        const blob = await response.blob();
-        return URL.createObjectURL(blob);
+        const response = await fetch(
+            `https://api-inference.huggingface.co/models/${model}`,
+            {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${API_KEY}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    inputs: prompt,
+                    parameters: {
+                        num_images_per_prompt: imageCount,
+                        // You can add width/height based on aspectRatio if needed
+                    }
+                })
+            }
+        );
+
+        if (!response.ok) {
+            const error = await response.json().catch(() => ({}));
+            throw new Error(error.error || `API Error: ${response.status}`);
+        }
+
+        return await response.blob();
     } catch (error) {
-        console.error('Error generating images:', error);
+        console.error("Image generation failed:", error);
         throw error;
     }
 };
@@ -1265,7 +1266,8 @@ const handleFormSubmit = async (e) => {
     createImageCards(imageCount, aspectRatio, promptText);
 
     try {
-        const imageUrl = await generateImages(selectedModel, imageCount, aspectRatio, promptText);
+        const imageBlob = await generateImages(selectedModel, promptText, imageCount, aspectRatio);
+        const imageUrl = URL.createObjectURL(imageBlob);
         updateImageCards(imageUrl);
         
         // Save to history
