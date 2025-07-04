@@ -969,7 +969,7 @@ const gridGallery = document.querySelector(".gallery-grid");
 
 
 
-// API key cannot be accessed in frontend. Use backend endpoint instead.
+//huggingface api key
 
 const examplePrompts = [
     "A magic forest with glowing plants and fairy homes among giant mushrooms",
@@ -1013,30 +1013,37 @@ const toggleTheme = () => {
     themeToggle.querySelector("i").className = isDarkTheme ? "fas fa-sun" : "fas fa-moon";
 };
 
-// Call backend endpoint to generate images
 const generateImages = async (model, prompt, imageCount, aspectRatio) => {
     try {
-        const response = await fetch("/generate-image/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                // CSRF token is handled by Django for POST if needed
-            },
-            body: JSON.stringify({
-                model,
-                prompt,
-                imageCount,
-                aspectRatio
-            })
-        });
-        if (!response.ok) {
-            let errorMsg = `API Error: ${response.status}`;
-            try {
-                const error = await response.json();
-                errorMsg = error.error || errorMsg;
-            } catch {}
-            throw new Error(errorMsg);
+        // First verify model exists
+        const modelCheck = await fetch(`https://huggingface.co/api/models/${model}`);
+        if (!modelCheck.ok) {
+            throw new Error(`Model ${model} not found`);
         }
+
+        const response = await fetch(
+            `https://api-inference.huggingface.co/models/${model}`,
+            {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${API_KEY}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    inputs: prompt,
+                    parameters: {
+                        num_images_per_prompt: imageCount,
+                        // You can add width/height based on aspectRatio if needed
+                    }
+                })
+            }
+        );
+
+        if (!response.ok) {
+            const error = await response.json().catch(() => ({}));
+            throw new Error(error.error || `API Error: ${response.status}`);
+        }
+
         return await response.blob();
     } catch (error) {
         console.error("Image generation failed:", error);
