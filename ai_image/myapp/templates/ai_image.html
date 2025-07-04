@@ -1026,7 +1026,7 @@ const generateImages = async (model, prompt, imageCount, aspectRatio) => {
             {
                 method: "POST",
                 headers: {
-                    "Authorization": `Bearer ${HUGGINGFACE_API_KEY}`, // Replace with your actual API key
+                    "Authorization": `Bearer ${os.environ.get('HUGGINGFACE_API_KEY')}`, // Replace with your actual API key
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
