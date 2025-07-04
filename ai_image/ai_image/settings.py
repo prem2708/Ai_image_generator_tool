@@ -127,7 +127,13 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-STATICSTORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# CSRF trusted origins for Railway deployment
+CSRF_TRUSTED_ORIGINS = [
+    "https://cooperative-passion-production-06c3.up.railway.app"
+]
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
