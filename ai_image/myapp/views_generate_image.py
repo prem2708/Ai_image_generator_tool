@@ -44,11 +44,17 @@ def generate_image(request):
             data=json.dumps(payload)
         )
         if response.status_code != 200:
+            # Log the full error for debugging
             try:
-                error = response.json().get('error', 'API Error')
+                error_json = response.json()
+                error = error_json.get('error', 'API Error')
+                detail = error_json
             except Exception:
                 error = 'API Error'
-            return JsonResponse({'error': error}, status=500)
+                detail = response.text
+            # Print error details to server log for debugging
+            print(f"HuggingFace API 403/other error: {error} | Detail: {detail} | Model: {model} | Prompt: {prompt}")
+            return JsonResponse({'error': error, 'detail': detail, 'status_code': response.status_code}, status=response.status_code)
 
         # Return image(s) as binary or as a URL (for now, return as binary for single image)
         return HttpResponse(response.content, content_type='image/png')
