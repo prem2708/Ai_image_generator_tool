@@ -969,7 +969,7 @@ const gridGallery = document.querySelector(".gallery-grid");
 
 
 
-const api_key = "HUGGINGFACE_API_KEY";//huggingface api key
+const api_key = "{{ api_key|escapejs }}";//huggingface api key
 
 const examplePrompts = [
     "A magic forest with glowing plants and fairy homes among giant mushrooms",

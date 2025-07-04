@@ -40,7 +40,7 @@ def ai_image(request):
     if not request.user.is_authenticated:
         return redirect('login')
     # Pass API_KEY from settings to template
-    return render(request, 'ai_image.html' )
+    return render(request, 'ai_image.html', {'api_key': settings.HUGGINGFACE_API_KEY})
 
 def logout_view(request):
     logout(request)
