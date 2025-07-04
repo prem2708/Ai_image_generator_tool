@@ -1055,8 +1055,8 @@ footer::before {
                     <li style="--i:5"><a href="#contact">Contact</a></li>
                 </ul>
                 <div class="auth-buttons">
-                    <a href="{% url 'login' %}" target="_blank"   class="login-btn">Login</a>
-                    <a href="{% url 'register' %}"  class="register-btn">Register</a>
+                    <a href="{% url 'login' %}" class="login-btn">Login</a>
+                    <a href="{% url 'register' %}" class="register-btn">Register</a>
                 </div>
             </nav>
             <div class="mobile-menu-toggle">
@@ -1064,8 +1064,8 @@ footer::before {
             </div>
         </div>
         <div class="mobile-auth-buttons">
-            <button class="login-btn">Log In</button>
-            <button class="register-btn">Register</button>
+            <button class="login-btn" id="mobileLoginBtn">Log In</button>
+            <button class="register-btn" id="mobileRegisterBtn">Register</button>
         </div>
     </header>
 
@@ -1235,12 +1235,17 @@ footer::before {
         // Mobile menu toggle
         const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
         const navMenu = document.querySelector('nav ul');
+        const mobileAuthButtons = document.querySelector('.mobile-auth-buttons');
         
         if (mobileMenuToggle) {
             mobileMenuToggle.addEventListener('click', () => {
                 navMenu.classList.toggle('active');
                 mobileMenuToggle.querySelector('i').classList.toggle('fa-bars');
                 mobileMenuToggle.querySelector('i').classList.toggle('fa-times');
+                // Toggle mobile auth buttons
+                if (mobileAuthButtons) {
+                    mobileAuthButtons.style.display = mobileAuthButtons.style.display === 'flex' ? 'none' : 'flex';
+                }
             });
         }
 
@@ -1316,6 +1321,20 @@ footer::before {
         // Initialize
         updateScrollProgress();
         highlightNavLink();
+
+        // Mobile auth button navigation
+        const mobileLoginBtn = document.getElementById('mobileLoginBtn');
+        const mobileRegisterBtn = document.getElementById('mobileRegisterBtn');
+        if (mobileLoginBtn) {
+            mobileLoginBtn.addEventListener('click', () => {
+                window.location.href = "{% url 'login' %}";
+            });
+        }
+        if (mobileRegisterBtn) {
+            mobileRegisterBtn.addEventListener('click', () => {
+                window.location.href = "{% url 'register' %}";
+            });
+        }
     </script>
 </body>
 </html> 
