@@ -2,7 +2,13 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.conf import settings
-from .views_generate_image import generate_image
+try:
+    from .views_generate_image import generate_image
+except ImportError:
+    # fallback for dev server reloads or import issues
+    def generate_image(request):
+        from django.http import JsonResponse
+        return JsonResponse({'error': 'Image generation endpoint not available'}, status=500)
 
 def home(request):
     return render(request, 'home.html')
