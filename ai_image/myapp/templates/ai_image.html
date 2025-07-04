@@ -969,7 +969,7 @@ const gridGallery = document.querySelector(".gallery-grid");
 
 
 
-//huggingface api key
+const api_key = os.environ.get('HUGGINGFACE_API_KEY')//huggingface api key
 
 const examplePrompts = [
     "A magic forest with glowing plants and fairy homes among giant mushrooms",
@@ -1026,7 +1026,7 @@ const generateImages = async (model, prompt, imageCount, aspectRatio) => {
             {
                 method: "POST",
                 headers: {
-                    "Authorization": `Bearer ${environ.get('HUGGINGFACE_API_KEY')}`, // Replace with your actual API key
+                    "Authorization": `Bearer ${api_key}`, // Replace with your actual API key
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
