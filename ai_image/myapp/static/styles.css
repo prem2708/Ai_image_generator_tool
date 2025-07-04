@@ -322,19 +322,43 @@ body {
 /* Responsive Design */
 @media (max-width: 480px) {
     .register-wrapper {
-        padding: 30px 20px;
+        padding: 18px 6px;
+        border-radius: 12px;
+        min-width: 0;
+        width: 100%;
+        box-sizing: border-box;
     }
-
     .register-header h2 {
-        font-size: 1.8rem;
+        font-size: 1.2rem;
     }
-
+    .register-form {
+        gap: 14px;
+    }
+    .form-group label {
+        font-size: 0.8rem;
+    }
     .input-group input {
-        padding: 10px 40px 10px 40px;
+        padding: 8px 10px 8px 36px;
+        font-size: 0.95rem;
     }
-
     .password-requirements ul {
-        padding-left: 40px;
+        padding-left: 20px;
+    }
+    .register-button {
+        padding: 10px 0;
+        font-size: 0.95rem;
+        border-radius: 8px;
+        gap: 6px;
+    }
+    .register-link {
+        font-size: 0.8rem;
+        margin-top: 12px;
+    }
+    .terms-conditions label {
+        font-size: 0.8rem;
+    }
+    body {
+        overflow-x: hidden;
     }
 }
 
@@ -575,20 +599,31 @@ body {
 /* Responsive Design */
 @media (max-width: 480px) {
     .login-wrapper {
-        padding: 30px 20px;
+        padding: 18px 6px;
+        border-radius: 12px;
+        min-width: 0;
+        width: 100%;
+        box-sizing: border-box;
     }
-
     .login-header h2 {
-        font-size: 1.8rem;
+        font-size: 1.2rem;
     }
-
+    .login-form {
+        gap: 14px;
+    }
     .form-options {
         flex-direction: column;
-        gap: 15px;
+        gap: 10px;
         align-items: flex-start;
     }
-
     .forgot-password {
-        margin-top: 10px;
+        margin-top: 8px;
+        font-size: 0.8rem;
+    }
+    .terms-conditions label {
+        font-size: 0.8rem;
+    }
+    body {
+        overflow-x: hidden;
     }
 }
