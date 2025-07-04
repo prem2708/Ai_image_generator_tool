@@ -130,7 +130,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # CSRF trusted origins for Railway deployment
 CSRF_TRUSTED_ORIGINS = [
-    "https://cooperative-passion-production-06c3.up.railway.app"
+    "https://aiimagegeneratortool-production.up.railway.app"
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
