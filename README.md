@@ -1,101 +1,152 @@
-# <img src="https://img.icons8.com/color/96/000000/artificial-intelligence.png" width="40" style="vertical-align:middle;"/> AI Image Generator Tool
 
 <p align="center">
-  <img src="https://img.icons8.com/clouds/200/000000/image.png" width="120" alt="AI Image Generator"/>
+  <img src="https://img.icons8.com/color/96/000000/artificial-intelligence.png" width="60" style="vertical-align:middle;"/>
+  <br/>
+  <img src="https://img.icons8.com/clouds/200/000000/image.png" width="140" alt="AI Image Generator"/>
+  <br/>
+  <h1><b>AI Image Generator Tool</b></h1>
+  <p><i>Unleash your creativity with AI-powered image generation!</i></p>
+  <a href="https://aiimagegeneratortool-production.up.railway.app">
+    <img src="https://img.shields.io/badge/Live%20Demo-Online-brightgreen?style=for-the-badge&logo=railway" alt="Live Demo"/>
+  </a>
+  <img src="https://img.shields.io/github/stars/prem2708/Ai_image_generator_tool?style=for-the-badge&color=yellow" alt="Stars"/>
+  <img src="https://img.shields.io/github/license/prem2708/Ai_image_generator_tool?style=for-the-badge&color=blue" alt="License"/>
 </p>
 
-## 🚀 Live Demo
-
-[![Deploy](https://img.shields.io/badge/Live%20Demo-Click%20Here-brightgreen?style=for-the-badge&logo=railway)](https://aiimagegeneratortool-production.up.railway.app)
 
 ---
+
 
 ## 📝 Description
 
-AI Image Generator Tool is a web application that allows users to generate stunning images using advanced AI models. Users can register, log in, and create unique images based on their input prompts. The app is built with Django and features a modern, user-friendly interface.
+<img src="https://img.icons8.com/fluency/48/000000/idea.png" width="32" style="vertical-align:middle;"/> <b>AI Image Generator Tool</b> is a modern web application that lets you create stunning, unique images from your imagination using advanced AI models. Simply enter a prompt, and watch as the AI brings your ideas to life!
+
+<ul>
+  <li>✨ <b>Easy to use</b> — Clean, intuitive interface</li>
+  <li>🔒 <b>Secure</b> — User authentication for your creations</li>
+  <li>⚡ <b>Fast</b> — Instant image generation</li>
+  <li>🎨 <b>Creative</b> — Endless possibilities</li>
+</ul>
 
 ---
+
 
 ## ✨ Features
 
-- <img src="https://img.icons8.com/fluency/24/000000/brain.png"/> AI-powered image generation
-- <img src="https://img.icons8.com/fluency/24/000000/login-rounded-right.png"/> User authentication (register, login, logout)
-- <img src="https://img.icons8.com/fluency/24/000000/gallery.png"/> Image gallery
-- <img src="https://img.icons8.com/fluency/24/000000/settings.png"/> Easy-to-use interface
-- <img src="https://img.icons8.com/fluency/24/000000/cloud.png"/> Deployed on Railway
+<table>
+  <tr>
+    <td>🧠 <b>AI-powered</b></td>
+    <td>🎨 <b>Image Gallery</b></td>
+    <td>🔐 <b>Authentication</b></td>
+    <td>⚙️ <b>Easy UI</b></td>
+    <td>☁️ <b>Cloud Deploy</b></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="https://img.icons8.com/fluency/48/000000/brain.png" width="32"/></td>
+    <td align="center"><img src="https://img.icons8.com/fluency/48/000000/gallery.png" width="32"/></td>
+    <td align="center"><img src="https://img.icons8.com/fluency/48/000000/login-rounded-right.png" width="32"/></td>
+    <td align="center"><img src="https://img.icons8.com/fluency/48/000000/settings.png" width="32"/></td>
+    <td align="center"><img src="https://img.icons8.com/fluency/48/000000/cloud.png" width="32"/></td>
+  </tr>
+</table>
 
 ---
+
 
 ## 📸 Screenshots
 
 <p align="center">
-  <img src="ai_image/myapp/static/co.jpg" width="200" style="margin:10px;"/>
-  <img src="ai_image/myapp/static/cs.png" width="200" style="margin:10px;"/>
+  <img src="ai_image/myapp/static/co.jpg" width="220" style="margin:10px; border-radius:10px; box-shadow:0 4px 12px #aaa;"/>
+  <img src="ai_image/myapp/static/cs.png" width="220" style="margin:10px; border-radius:10px; box-shadow:0 4px 12px #aaa;"/>
 </p>
 
 ---
 
+
 ## 🛠️ Tech Stack
 
-- <img src="https://img.icons8.com/color/24/000000/django.png"/> Django
-- <img src="https://img.icons8.com/color/24/000000/python.png"/> Python
-- <img src="https://img.icons8.com/color/24/000000/html-5--v1.png"/> HTML5, CSS3, JavaScript
-- <img src="https://img.icons8.com/color/24/000000/sqlite.png"/> SQLite
+<p>
+  <img src="https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white"/>
+  <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white"/>
+  <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white"/>
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"/>
+  <img src="https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white"/>
+</p>
 
 ---
+
 
 ## ⚙️ Setup & Installation
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/prem2708/Ai_image_generator_tool.git
-   cd Ai_image_generator_tool
-   ```
-2. **Create a virtual environment & activate it:**
-   ```bash
-   python -m venv venv
-   venv\Scripts\activate  # On Windows
-   # source venv/bin/activate  # On Mac/Linux
-   ```
-3. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-4. **Run migrations:**
-   ```bash
-   python ai_image/manage.py migrate
-   ```
-5. **Start the server:**
-   ```bash
-   python ai_image/manage.py runserver
-   ```
-6. **Open in browser:**
-   Visit [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+<details>
+<summary><b>🛠️ Click to expand setup instructions</b></summary>
+
+1. <b>Clone the repository:</b>
+   <br/>
+   <code>git clone https://github.com/prem2708/Ai_image_generator_tool.git</code><br/>
+   <code>cd Ai_image_generator_tool</code>
+2. <b>Create a virtual environment & activate it:</b>
+   <br/>
+   <code>python -m venv venv</code><br/>
+   <code>venv\Scripts\activate</code> <i>(Windows)</i><br/>
+   <code>source venv/bin/activate</code> <i>(Mac/Linux)</i>
+3. <b>Install dependencies:</b>
+   <br/>
+   <code>pip install -r requirements.txt</code>
+4. <b>Run migrations:</b>
+   <br/>
+   <code>python ai_image/manage.py migrate</code>
+5. <b>Start the server:</b>
+   <br/>
+   <code>python ai_image/manage.py runserver</code>
+6. <b>Open in browser:</b>
+   <br/>
+   Visit <a href="http://127.0.0.1:8000/">http://127.0.0.1:8000/</a>
+
+</details>
 
 ---
+
 
 ## 🧑‍💻 Usage
 
-1. Register for a new account or log in.
-2. Enter a prompt to generate an image using AI.
-3. View, download, or share your generated images.
+<ol>
+  <li>📝 Register for a new account or log in.</li>
+  <li>💡 Enter a prompt to generate an image using AI.</li>
+  <li>🖼️ View, download, or share your generated images.</li>
+</ol>
 
 ---
+
 
 ## 🌐 Deployment
 
-This app is deployed on [Railway](https://railway.app/). You can try the live version here:
+<img src="https://img.icons8.com/color/48/000000/railway.png" width="32" style="vertical-align:middle;"/> <b>Deployed on Railway</b>
 
-👉 [aiimagegeneratortool-production.up.railway.app](https://aiimagegeneratortool-production.up.railway.app)
+<a href="https://aiimagegeneratortool-production.up.railway.app">
+  <img src="https://img.shields.io/badge/Live%20Demo-Click%20Here-brightgreen?style=for-the-badge&logo=railway" alt="Live Demo"/>
+</a>
 
 ---
+
 
 ## 🤝 Contributing
 
-Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
+<img src="https://img.icons8.com/color/48/000000/conference-call.png" width="32" style="vertical-align:middle;"/> <b>We welcome contributions!</b>
+
+<ul>
+  <li>⭐ Star this repo to support the project</li>
+  <li>🐛 <b>Found a bug?</b> Open an issue</li>
+  <li>🚀 <b>Want a feature?</b> Submit a pull request</li>
+  <li>💬 <b>Questions?</b> Start a discussion</li>
+</ul>
 
 ---
 
+
 ## 📄 License
+
+<img src="https://img.icons8.com/color/48/000000/open-source.png" width="32" style="vertical-align:middle;"/> <b>MIT License</b>
 
 This project is licensed under the MIT License.
