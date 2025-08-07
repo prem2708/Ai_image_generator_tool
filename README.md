@@ -1,7 +1,6 @@
 
 <p align="center">
-  <img src="https://img.icons8.com/color/96/000000/artificial-intelligence.png" width="60" style="vertical-align:middle;"/>
-  <br/>
+  
   <img src="https://img.icons8.com/clouds/200/000000/image.png" width="140" alt="AI Image Generator"/>
   <br/>
   <h1><b>AI Image Generator Tool</b></h1>
