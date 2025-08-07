@@ -72,6 +72,7 @@
   <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white"/>
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"/>
   <img src="https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Hugging%20Face-FFD21F?style=for-the-badge&logo=huggingface&logoColor=black" alt="Hugging Face"/>
 </p>
 
 ---
@@ -145,8 +146,4 @@
 ---
 
 
-## 📄 License
 
-<img src="https://img.icons8.com/color/48/000000/open-source.png" width="32" style="vertical-align:middle;"/> <b>MIT License</b>
-
-This project is licensed under the MIT License.
